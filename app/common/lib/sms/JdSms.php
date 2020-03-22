@@ -1,0 +1,12 @@
+<?php
+declare(strict_types=1);
+
+namespace app\common\lib\sms;
+
+class JdSms implements SmsBase
+{
+    public static function sendCode(string $phoneNum, int $code): bool
+    {
+        return true;
+    }
+}
