@@ -19,7 +19,7 @@ class User
     {
         $redisCode = cache(config('redis.code_pre') . $data['phone_number']);
         if (empty($redisCode) || $redisCode != $data['code']) {
-            // throw new \think\Exception('验证码错误或不存在', -1009);
+            throw new \think\Exception('验证码错误或不存在', -1009);
         }
         $user = $this->userObj->getUserByPhoneNumber($data['phone_number']);
         if (!$user) {

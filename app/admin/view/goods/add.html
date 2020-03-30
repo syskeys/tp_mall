@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{__STATIC__}/admin/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="{__STATIC__}/admin/css/layuimini.css" media="all">
+    <link rel="stylesheet" href="{__STATIC__}/admin/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+</head>
+<body>
+<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品分类</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-block">
+            <a type="text" class="layui-btn">选择</a>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品副标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品促销语</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">关键词</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品单位</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">库存显示</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="1" title="是" checked>
+            <input type="radio" name="sex" value="0" title="是">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">总库存</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">生产日期</label>
+        <div class="layui-input-block">
+            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">请填写描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div>{:token_field()}</div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+</form>
+<textarea id="demo" style="display: none;"></textarea>
+<script src="{__STATIC__}/admin/lib/layui-v2.5.4/layui.js?v=1.0.4" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/js/uploads.js" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/js/goods.js" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/js/common.js" charset="utf-8"></script>
+<script>
+    // 点击查看分类
+    $(".change-type").on('click',function(){
+        var goods_cls_ids = $("#goods_cate").attr('data-ids');
+        layObj.dialog("{:url('category/dialog')}");
+    });
+
+    layui.use(['form', 'layedit', 'laydate', 'element'], function () {
+        var form = layui.form,
+            layedit = layui.layedit,
+            laydate = layui.laydate,
+            $ = layui.$,
+            element = layui.element;
+        layedit.build('demo');
+        laydate.render({
+            elem: '$goods_date'
+        });
+        layedit.set({
+            uploadImage: {
+                url: '/admin/image/layUpload',
+                type: 'post'
+            }
+        });
+    })
+    layui.form.on('submit(*)', function (data) {
+        let goods_data = {
+            ...data.field,
+            category_id: $('#goods_cate').attr('data-ids'),
+            big_img: $('$main_img').attr('src'),
+            carousel_image: images('banner_img'),
+            recommend_image: images('show_img'),
+            __token__: $("input['name=__token__']").val(),
+            sku: skus(),
+            description: layedit.getContent(edit_index),
+            add_spec_arr: addSpecArr()
+        };
+        console.log(goods_data);
+        url = "{:url('goods_data')}";
+        layObj.post(url, goods_data, (res) => {
+            if(res.status == 1){
+
+            }
+        });
+    })
+</script>
+</body>
+</html>

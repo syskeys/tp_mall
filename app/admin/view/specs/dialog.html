@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="{__STATIC__}/admin/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/js/common.js" charset="utf-8"></script>
+<script>
+    let isInputVal = false;
+    var cls = '';
+    let moke = {$specs|raw};
+    layui.use(['form'], function () {
+        let request = getRequest();
+        cls = request['cls'];
+        
+        function queryClassif() {
+            let html = '';
+            moke.forEach(function (item, index) {
+                html += '<li class="child-ele" data-id="${item.id}">'
+            })
+        }
+    })
+</script>
+</body>
+</html>

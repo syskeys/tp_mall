@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="{__STATIC__}/admin/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="{__STATIC__}/admin/js/common.js" charset="utf-8"></script>
+<script>
+    let moke = {$categories|raw}
+    layui.use(['form'], function(){
+        let html = ''
+        moke.forEach(function(item){
+            html += '<li class="child-ele" data-id="'+item.id+'" pid="'+item.pid+'">'
+        })
+        $(".p-0").html(html);
+    });
+
+    queryClassif();
+
+    $("body").on('click', '.child-ele', function () {
+        let pid = $(this).attr('data-id');
+        let type = $(this).parent().attr('type');
+        let pcls = '.p-'+(1+parseInt(type));
+        $(this).parent().children('li').removeClass('active');
+        $(this).addClass('active');
+        if(pcls === '.p-3'){
+            return false;
+        }
+        $('.p-3').html('');
+        $('.p-2').html('');
+
+        let url = '/admin/category/getByPid?pid='+pid;
+
+        layObj.get(url, function (res) {
+            moke = res.result;
+            console.log(moke);
+            let html = '';
+            moke.forEach(function (item) {
+                html += '<li class="child-ele" data-id="'+item.id+'" pid="'+item.pid+'">'
+            })
+            console.log(pcls, 'pcls');
+            $(pcls).html(html);
+        })
+    });
+
+    $('html').on('click', '.classify-btn', function () {
+        let p0 = $('.p-0 .active'),
+            p1 = $('.p-1 .active'),
+            p2 = $('.p-2 .active');
+    })
+</script>
+</body>
+</html>
